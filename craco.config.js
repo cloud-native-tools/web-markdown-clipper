@@ -5,17 +5,18 @@ module.exports = {
                 ...webpackConfig,
                 entry: {
                     main: [env === 'development' && require.resolve('react-dev-utils/webpackHotDevClient'), paths.appIndexJs].filter(Boolean),
-                    content: './src/service/DOMEvaluator.ts',
+                    content: './src/content.ts',
+                    background: './src/background.ts',
                 },
                 output: {
                     ...webpackConfig.output,
-                    filename: 'static/js/[name].js',
+                    filename: '[name].js',
                 },
                 optimization: {
                     ...webpackConfig.optimization,
                     runtimeChunk: false,
                 }
-            }
+            };
         },
     }
-}
+};
