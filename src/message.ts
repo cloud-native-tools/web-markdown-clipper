@@ -1,7 +1,8 @@
 export type Request = {
-
+    command: string
 }
 
 export type Response = {
-    content: string
+    failed: boolean
+    reason: string | undefined
 }

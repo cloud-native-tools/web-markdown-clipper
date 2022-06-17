@@ -1,14 +1,20 @@
 
 import { Request, Response } from "./message";
 
-async function download_selection_as_markdown() {
+async function send_command_to_active_tab(command: string) {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tabs.length > 0) {
     const tabId = tabs[0].id;
     if (tabId) {
-      const request: Request = {};
+      const request: Request = {
+        command
+      };
       chrome.tabs.sendMessage(tabId, request, (response: Response) => {
-        console.log(response);
+        if (response.failed) {
+          console.error(`handle command ${request.command} failed: ${response.reason}`);
+        } else {
+          console.log(`handle command ${request.command} successfully`);
+        }
       });
     }
   }
@@ -19,12 +25,6 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.commands.onCommand.addListener((command) => {
-  switch (command) {
-    case "download_selection_as_markdown":
-      download_selection_as_markdown();
-      break;
-    default:
-      console.error(`unknown command ${command}`);
-  }
+  send_command_to_active_tab(command);
 });
 
