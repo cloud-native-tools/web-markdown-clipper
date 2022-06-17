@@ -5,10 +5,10 @@
   "author": "liuqiming",
   "description": "get part of web page as clip in markdown format",
   "icons": {
-    "16": "icons/favicon-16x16.png",
-    "32": "icons/favicon-32x32.png",
-    "192": "icons/favicon-192x192.png",
-    "512": "icons/favicon-512x512.png"
+    "16": "static/icons/favicon-16x16.png",
+    "32": "static/icons/favicon-32x32.png",
+    "192": "static/icons/favicon-192x192.png",
+    "512": "static/icons/favicon-512x512.png"
   },
   "permissions": [
     "tabs",
@@ -24,23 +24,22 @@
     "*://*/*"
   ],
   "background": {
-    "service_worker": "service/background.js"
+    "service_worker": "./static/js/background.js"
   },
   "action": {
     "default_title": "web-markdown-clipper",
     "default_popup": "index.html",
     "default_icon": {
-      "16": "icons/favicon-16x16.png",
-      "32": "icons/favicon-32x32.png",
-      "192": "icons/favicon-192x192.png",
-      "512": "icons/favicon-512x512.png"
+      "16": "static/icons/favicon-16x16.png",
+      "32": "static/icons/favicon-32x32.png",
+      "192": "static/icons/favicon-192x192.png",
+      "512": "static/icons/favicon-512x512.png"
     }
   },
-  "options_page": "options.html",
   "content_scripts": [
     {
         "matches": ["http://*/*", "https://*/*"],
-        "js": ["./static/js/content.js"]
+        "js": ["static/js/content.js"]
     }
  ],
   "commands": {

@@ -10,7 +10,7 @@ module.exports = {
                 },
                 output: {
                     ...webpackConfig.output,
-                    filename: '[name].js',
+                    filename: 'static/js/[name].js',
                 },
                 optimization: {
                     ...webpackConfig.optimization,
