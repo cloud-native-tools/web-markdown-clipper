@@ -1,10 +1,12 @@
 module.exports = {
     webpack: {
         configure: (webpackConfig, { env, paths }) => {
+            // console.log(env);
+            // console.log(paths);
             return {
                 ...webpackConfig,
                 entry: {
-                    main: [env === 'development' && require.resolve('react-dev-utils/webpackHotDevClient'), paths.appIndexJs].filter(Boolean),
+                    main: paths.appIndexJs,
                     content: './src/content.ts',
                     background: './src/background.ts',
                 },

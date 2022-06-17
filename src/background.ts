@@ -1,60 +1,30 @@
-// chrome.runtime.onInstalled.addListener(() => {
-//   console.log('extentions loaded');
-// });
 
+import { Request, Response } from "./message";
 
-// const defaultOptions = {
-//   headingStyle: "atx",
-//   hr: "___",
-//   "bulletListMarker": "+",
-//   codeBlockStyle: "fenced",
-//   fence: "```",
-//   emDelimiter: "_",
-//   strongDelimiter: "**",
-//   linkStyle: "inlined",
-//   linkReferenceStyle: "full",
-//   imageStyle: "markdown",
-//   imageRefStyle: "inlined",
-//   "frontmatter": "---\ncreated: \"{date:YYYY-MM-DD HH:mm:ss}\"\nsource: \"{baseURI}\"\ntitle: \"{pageTitle}\"\n---\n",
-//   "backmatter": "",
-//   "title": "{date:YYYY-MM-DD-HH-mm-ss}-{pageTitle}",
-//   includeTemplate: true,
-//   saveAs: false,
-//   downloadImages: true,
-//   imagePrefix: '{pageTitle}/',
-//   mdClipsFolder: 'Clips',
-//   disallowedChars: '[]#^',
-//   downloadMode: 'downloadsApi',
-//   turndownEscape: true,
-//   contextMenus: true,
-//   // obsidianVault: null,
-//   // obsidianPathType: 'name'
-// };
+async function download_selection_as_markdown() {
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (tabs.length > 0) {
+    const tabId = tabs[0].id;
+    if (tabId) {
+      const request: Request = {};
+      chrome.tabs.sendMessage(tabId, request, (response: Response) => {
+        console.log(response);
+      });
+    }
+  }
+}
 
-// browser.commands.onCommand.addListener(function (command) {
-//   const tab = browser.tabs.getCurrent();
-//   console.log(`run command ${command} on ${tab}`);
-//   if (command == "download_selection_as_markdown") {
-//     const info = { menuItemId: "download-markdown-selection" };
-//     downloadMarkdownFromContext(info, tab);
-//   }
-// else if (command == "copy_tab_as_markdown") {
-//   const info = { menuItemId: "copy-markdown-all" };
-//   copyMarkdownFromContext(info, tab);
-// }
-// else if (command == "copy_tab_as_markdown_link") {
-//   copyTabAsMarkdownLink(tab);
-// }
+chrome.runtime.onInstalled.addListener(() => {
+  console.log('extensions loaded');
+});
 
-// });
+chrome.commands.onCommand.addListener((command) => {
+  switch (command) {
+    case "download_selection_as_markdown":
+      download_selection_as_markdown();
+      break;
+    default:
+      console.error(`unknown command ${command}`);
+  }
+});
 
-// chrome.commands.onCommand.addListener((command) => {
-//   console.log(`Command: ${command}`);
-//   const tab = browser.tabs.getCurrent();
-//   // if (command == "download_selection_as_markdown") {
-//   //   const info = { menuItemId: "download-markdown-selection" };
-//   //   downloadMarkdownFromContext(info, tab);
-//   // }
-// });
-
-export {};
