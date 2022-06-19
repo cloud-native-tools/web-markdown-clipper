@@ -4,5 +4,6 @@ export type Request = {
 
 export type Response = {
     failed: boolean
-    reason: string | undefined
+    msg?: string,
+    data?: string
 }

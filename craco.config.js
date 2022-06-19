@@ -1,6 +1,7 @@
 module.exports = {
     webpack: {
         configure: (webpackConfig, { env, paths }) => {
+            console.log(`override webpack config: ${env}`);
             let htmlPlugin = webpackConfig.plugins[0];
             htmlPlugin.options.excludeChunks = [
                 "content",
