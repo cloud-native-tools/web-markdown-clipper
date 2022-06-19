@@ -17,7 +17,9 @@ export const get_html_of_selection = (): string => {
 };
 
 export const download_content = (filename: string, content: string): void => {
-    const base64Uri = `data:text/markdown;base64,${content}`;
+    const buffer = Buffer.from(content);
+    const encoded = buffer.toString('base64');
+    const base64Uri = `data:text/markdown;base64,${encoded}`;
     const link = document.createElement('a');
     link.download = filename;
     link.href = base64Uri;

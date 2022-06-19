@@ -1,13 +1,18 @@
 import { Request, Response } from "./message";
-import {get_html_of_selection,download_content} from "./utils";
+import { get_html_of_selection, download_content } from "./utils";
+import TurndownService from "turndown";
 
 type CommandHandler = (a: Request) => Response;
+
+const turndown_service = new TurndownService();
 
 const download_selection_as_markdown_handler: CommandHandler = (request: Request) => {
     console.log(`request: ${request}`);
 
-   const html = get_html_of_selection();
-   download_content("test.html", html);
+    const html = get_html_of_selection();
+    const markdown = turndown_service.turndown(html);
+
+    download_content("test.md", markdown);
 
     const response: Response = {
         failed: false,

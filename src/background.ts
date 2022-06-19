@@ -10,7 +10,8 @@ async function send_command_to_active_tab(command: string) {
         command
       };
       chrome.tabs.sendMessage(tabId, request, (response: Response) => {
-        if (response.failed) {
+        console.log(`got a response for command ${command}: ${response}`);
+        if (response && response.failed) {
           console.error(`handle command ${request.command} failed: ${response.msg}`);
         } else {
           console.log(`handle command ${request.command} successfully`);
