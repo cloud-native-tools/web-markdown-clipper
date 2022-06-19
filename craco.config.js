@@ -1,8 +1,11 @@
 module.exports = {
     webpack: {
         configure: (webpackConfig, { env, paths }) => {
-            // console.log(env);
-            // console.log(paths);
+            let htmlPlugin = webpackConfig.plugins[0];
+            htmlPlugin.options.excludeChunks = [
+                "content",
+                "background"
+            ];
             return {
                 ...webpackConfig,
                 entry: {
