@@ -1,15 +1,18 @@
 
 import { Request, Response } from "./message";
 
+
 async function send_command_to_active_tab(command: string) {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tabs.length > 0) {
-    const tabId = tabs[0].id;
-    if (tabId) {
+    const activeTab = tabs[0];
+    if (activeTab && activeTab.id) {
       const request: Request = {
         command
       };
-      chrome.tabs.sendMessage(tabId, request, (response: Response) => {
+      console.warn(`send command [${command}] to active tab [${activeTab}]`);
+      // chrome.runtime
+      chrome.tabs.sendMessage(activeTab.id, request, (response: Response) => {
         console.log(`got a response for command ${command}: ${response}`);
         if (response && response.failed) {
           console.error(`handle command ${request.command} failed: ${response.msg}`);
@@ -18,14 +21,14 @@ async function send_command_to_active_tab(command: string) {
         }
       });
     }
+  } else {
+    console.warn(`no active tab found for command: ${command}`);
   }
 }
 
 chrome.runtime.onInstalled.addListener(() => {
   console.log('extensions loaded');
+  chrome.commands.onCommand.addListener((command) => {
+    send_command_to_active_tab(command);
+  });
 });
-
-chrome.commands.onCommand.addListener((command) => {
-  send_command_to_active_tab(command);
-});
-
