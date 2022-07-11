@@ -33,17 +33,17 @@ ${markdown}
     return response;
 };
 
-const handlers: Map<string, CommandHandler> = new Map<string, CommandHandler>();
-handlers.set("download_selection_as_markdown", download_selection_as_markdown_handler);
+const commandHandlers: Map<string, CommandHandler> = new Map<string, CommandHandler>();
+commandHandlers.set("download_selection_as_markdown", download_selection_as_markdown_handler);
 console.info(`register for command: [download_selection_as_markdown]`);
 
-chrome.runtime.onMessage.addListener((
+const messageHandler = (
     request: Request,
     sender: chrome.runtime.MessageSender,
     sendResponse: (response: Response) => void
 ) => {
     console.log(`receive a command ${request.command}`);
-    const handler: CommandHandler | undefined = handlers.get(request.command);
+    const handler: CommandHandler | undefined = commandHandlers.get(request.command);
     if (handler) {
         console.info(`start handler for command: [${request.command}]`);
         const result = handler(request);
@@ -55,6 +55,10 @@ chrome.runtime.onMessage.addListener((
             msg: `unknown command "${request.command}"`,
         });
     }
-});
+    console.log(`wait for another message`);
+    chrome.runtime.onMessage.addListener(messageHandler);
+};
+
+chrome.runtime.onMessage.addListener(messageHandler);
 
 export { };

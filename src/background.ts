@@ -13,11 +13,15 @@ async function send_command_to_active_tab(command: string) {
       console.info(`send command [${command}] to active tab [${activeTab.title}]`);
       // chrome.runtime
       chrome.tabs.sendMessage(activeTab.id, request, (response: Response) => {
-        console.log(`got a response for command ${command}: ${response}`);
-        if (response && response.failed) {
-          console.error(`handle command ${request.command} failed: ${response.msg}`);
+        console.log(`got a response for command [${command}]`);
+        if (chrome.runtime.lastError) {
+          console.error(`runtime error: ${chrome.runtime.lastError.message}`);
         } else {
-          console.log(`handle command ${request.command} successfully`);
+          if (response && response.failed) {
+            console.error(`handle command ${request.command} failed: ${response.msg}`);
+          } else {
+            console.log(`handle command ${request.command} successfully`);
+          }
         }
       });
     }
@@ -26,9 +30,12 @@ async function send_command_to_active_tab(command: string) {
   }
 }
 
+const commandListener = (command: string) => {
+  send_command_to_active_tab(command);
+  chrome.commands.onCommand.addListener(commandListener);
+};
+
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('extensions loaded');
-  chrome.commands.onCommand.addListener((command) => {
-    send_command_to_active_tab(command);
-  });
+  console.log('"web-markdown-clipper" extensions loaded');
+  chrome.commands.onCommand.addListener(commandListener);
 });

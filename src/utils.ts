@@ -42,7 +42,7 @@ export const download_content = (filename: string, content: string): void => {
 
     link.download = "WebMarkdownClips_" + generateValidFileName(filename);
     link.href = base64Uri;
-    console.log(`download: ${link.download}`);
+    console.log(`download: [${link.download}]`);
     link.click();
 };
 
