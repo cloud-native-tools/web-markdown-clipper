@@ -16,13 +16,33 @@ export const get_html_of_selection = (): string => {
     }
 };
 
+export const generateValidFileName = (title: string, disallowedChars = []): string => {
+    if (!title) return title;
+    else title = title + '';
+    // remove < > : " / \ | ? * 
+    const illegalRe = /[/?<>\\:*|":]/g;
+    let name = title.replace(illegalRe, "").replace(new RegExp('\u00A0', 'g'), ' ');
+
+    if (disallowedChars) {
+        for (let c of disallowedChars) {
+            if (`[\\^$.|?*+()`.includes(c)) {
+                c = `\\${c}`;
+            }
+            name = name.replace(new RegExp(c, 'g'), '');
+        }
+    }
+
+    return name;
+};
+
 export const download_content = (filename: string, content: string): void => {
-    const buffer = Buffer.from(content);
-    const encoded = buffer.toString('base64');
+    const encoded = base64EncodeUnicode(content);
     const base64Uri = `data:text/markdown;base64,${encoded}`;
     const link = document.createElement('a');
-    link.download = filename;
+
+    link.download = "WebMarkdownClips_" + generateValidFileName(filename);
     link.href = base64Uri;
+    console.log(`download: ${link.download}`);
     link.click();
 };
 
@@ -77,4 +97,13 @@ export const download_image = (filename: string, url: string): void => {
         link.click();
     }
     */
+};
+
+
+export const base64EncodeUnicode = (content: string): string => {
+    const utf8Bytes = encodeURIComponent(content).replace(/%([0-9A-F]{2})/g, function (match, g1) {
+        return String.fromCharCode(parseInt('0x' + g1, 16));
+    });
+
+    return btoa(utf8Bytes);
 };

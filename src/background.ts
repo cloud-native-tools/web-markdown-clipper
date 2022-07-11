@@ -10,7 +10,7 @@ async function send_command_to_active_tab(command: string) {
       const request: Request = {
         command
       };
-      console.warn(`send command [${command}] to active tab [${activeTab}]`);
+      console.info(`send command [${command}] to active tab [${activeTab.title}]`);
       // chrome.runtime
       chrome.tabs.sendMessage(activeTab.id, request, (response: Response) => {
         console.log(`got a response for command ${command}: ${response}`);
