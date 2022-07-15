@@ -37,6 +37,11 @@ const commandHandlers: Map<string, CommandHandler> = new Map<string, CommandHand
 commandHandlers.set("download_selection_as_markdown", download_selection_as_markdown_handler);
 console.info(`register for command: [download_selection_as_markdown]`);
 
+const listenMessage = () => {
+    console.log(`listen message`);
+    chrome.runtime.onMessage.addListener(messageHandler);
+};
+
 const messageHandler = (
     request: Request,
     sender: chrome.runtime.MessageSender,
@@ -55,10 +60,8 @@ const messageHandler = (
             msg: `unknown command "${request.command}"`,
         });
     }
-    console.log(`wait for another message`);
-    chrome.runtime.onMessage.addListener(messageHandler);
+    listenMessage();
 };
 
-chrome.runtime.onMessage.addListener(messageHandler);
-
+listenMessage();
 export { };

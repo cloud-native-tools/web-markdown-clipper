@@ -32,10 +32,15 @@ async function send_command_to_active_tab(command: string) {
 
 const commandListener = (command: string) => {
   send_command_to_active_tab(command);
+  listenCommand();
+};
+
+const listenCommand = () => {
+  console.log("listen command");
   chrome.commands.onCommand.addListener(commandListener);
 };
 
 chrome.runtime.onInstalled.addListener(() => {
   console.log('"web-markdown-clipper" extensions loaded');
-  chrome.commands.onCommand.addListener(commandListener);
+  listenCommand();
 });
