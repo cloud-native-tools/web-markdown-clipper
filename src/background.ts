@@ -37,9 +37,6 @@ export const inject_code_to_active_tab = async (filename: string) => {
         {
           target: { tabId: activeTab.id },
           files: [filename],
-        },
-        results => {
-          console.log(results);
         }
       );
     }
@@ -52,8 +49,4 @@ const commandListener = (command: string) => {
   inject_code_to_active_tab("static/js/content.js");
 };
 
-console.log("background script loaded");
-chrome.runtime.onInstalled.addListener(() => {
-  console.log('"web-markdown-clipper" extensions loaded');
-  chrome.commands.onCommand.addListener(commandListener);
-});
+chrome.commands.onCommand.addListener(commandListener);
