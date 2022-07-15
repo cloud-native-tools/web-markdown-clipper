@@ -21,7 +21,8 @@
     "scripting"
   ],
   "host_permissions": [
-    "*://*/*"
+    "*://*/*",
+    "<all_urls>"
   ],
   "background": {
     "service_worker": "./static/js/background.js"
@@ -36,17 +37,6 @@
       "512": "static/icons/favicon-512x512.png"
     }
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "static/js/content.js"
-      ]
-    }
-  ],
   "commands": {
     "download_selection_as_markdown": {
       "suggested_key": {

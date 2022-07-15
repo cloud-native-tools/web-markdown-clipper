@@ -8,8 +8,8 @@ const App = () => {
   return (
     <div className="container">
       <MDEditor value={value} onChange={(value) => {
-          setValue(value || '');
-        }} />
+        setValue(value || '');
+      }} />
       <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
     </div>
   );
@@ -22,3 +22,4 @@ root.render(
     <App />
   </React.StrictMode>
 );
+console.log("main script loaded");
