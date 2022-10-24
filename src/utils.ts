@@ -14,6 +14,8 @@ source: "${document.baseURI}"
 title: "${document.title}"
 ---
 
+[${document.title}](${document.baseURI})
+
 ${markdown}
 `;
     const date = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
