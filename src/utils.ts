@@ -2,23 +2,35 @@ import TurndownService from "turndown";
 
 const turndown_service = new TurndownService();
 
-export const download_selection_as_markdown = () => {
+export type Clip = {
+    created: string
+    source: string,
+    title: string,
+    markdown: string
+}
+
+export const get_clip_key = (clip: Clip) => {
+    return `${clip.title}-${clip.created}`;
+};
+
+export const get_selection_as_clip: () => Clip = () => {
     const html = get_html_of_selection();
     const markdown = turndown_service.turndown(html);
 
     const now = new Date();
     const date = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
-    const clip = {
+    return {
         created: date,
         source: document.baseURI,
         title: document.title,
         markdown: `[${document.title}](${document.baseURI})\n\n${markdown}`
     };
+};
 
-    const filename = `${document.title}-${date}`;
+export const download_selection_as_markdown = () => {
+    const clip = get_selection_as_clip();
+    const filename = get_clip_key(clip);
     download_content(filename, JSON.stringify(clip));
-
-    return markdown;
 };
 
 // reference: https://stackoverflow.com/a/5084044/304786

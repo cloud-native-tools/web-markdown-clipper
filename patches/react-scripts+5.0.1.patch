@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-scripts/config/webpack.config.js b/node_modules/react-scripts/config/webpack.config.js
-index e465d8e..3fea3b6 100644
+index e465d8e..061b143 100644
 --- a/node_modules/react-scripts/config/webpack.config.js
 +++ b/node_modules/react-scripts/config/webpack.config.js
-@@ -210,7 +210,11 @@ module.exports = function (webpackEnv) {
+@@ -210,7 +210,12 @@ module.exports = function (webpackEnv) {
        : isEnvDevelopment && 'cheap-module-source-map',
      // These are the "entry points" to our application.
      // This means they will be the "root" imports that are included in JS bundle.
@@ -10,12 +10,13 @@ index e465d8e..3fea3b6 100644
 +    entry: {
 +      main: paths.appIndexJs,
 +      content: './src/content.ts',
++      edit: './src/edit.ts',
 +      background: './src/background.ts',
 +    },
      output: {
        // The build folder.
        path: paths.appBuild,
-@@ -218,9 +222,7 @@ module.exports = function (webpackEnv) {
+@@ -218,9 +223,7 @@ module.exports = function (webpackEnv) {
        pathinfo: isEnvDevelopment,
        // There will be one main bundle, and one file per asynchronous chunk.
        // In development, it does not produce real files.
@@ -26,7 +27,7 @@ index e465d8e..3fea3b6 100644
        // There are also additional JS chunk files if you use code splitting.
        chunkFilename: isEnvProduction
          ? 'static/js/[name].[contenthash:8].chunk.js'
-@@ -301,6 +303,7 @@ module.exports = function (webpackEnv) {
+@@ -301,6 +304,7 @@ module.exports = function (webpackEnv) {
          // This is only used in production mode
          new CssMinimizerPlugin(),
        ],
@@ -34,18 +35,17 @@ index e465d8e..3fea3b6 100644
      },
      resolve: {
        // This allows you to set a fallback for where webpack should look for modules.
-@@ -607,7 +610,14 @@ module.exports = function (webpackEnv) {
+@@ -607,7 +611,13 @@ module.exports = function (webpackEnv) {
        // Generates an `index.html` file with the <script> injected.
        new HtmlWebpackPlugin(
          Object.assign(
 -          {},
 +          {
-+            options: {
-+              excludeChunks: [
-+                "content",
-+                "background"
-+              ]
-+            }
++            excludeChunks: [
++              "content",
++              "edit",
++              "background"
++            ]
 +          },
            {
              inject: true,

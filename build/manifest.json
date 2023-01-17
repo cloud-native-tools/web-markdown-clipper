@@ -25,7 +25,8 @@
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "./static/js/background.js"
+    "service_worker": "./static/js/background.js",
+    "type": "module"
   },
   "action": {
     "default_title": "web-markdown-clipper",
@@ -45,13 +46,20 @@
       },
       "description": "Download Selection as Markdown"
     },
-    "_execute_action": {
+    "edit_selection_as_markdown": {
       "suggested_key": {
-        "windows": "Ctrl+Shift+S",
-        "mac": "MacCtrl+Shift+S",
-        "linux": "Ctrl+Shift+S"
+        "default": "Ctrl+E",
+        "mac": "MacCtrl+E"
       },
       "description": "Edit Selection as Markdown"
+    },
+    "_execute_action": {
+      "suggested_key": {
+        "windows": "Ctrl+P",
+        "mac": "MacCtrl+P",
+        "linux": "Ctrl+P"
+      },
+      "description": "Open popup"
     }
   }
 }
