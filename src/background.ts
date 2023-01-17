@@ -1,5 +1,3 @@
-import { download_selection_as_markdown, get_clip_key } from "./utils";
-
 export const inject_code_to_active_tab = async (filename: string) => {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tabs.length > 0) {
@@ -26,12 +24,3 @@ const commandListener = (command: string) => {
 };
 
 chrome.commands.onCommand.addListener(commandListener);
-
-chrome.runtime.onMessage.addListener(clip => {
-  console.log(`received a ${clip} on background script`);
-  const clip_key = get_clip_key(clip);
-  const data: { [key: string]: any } = {
-    [clip_key]: clip
-  };
-  chrome.storage.local.set(data);
-});
