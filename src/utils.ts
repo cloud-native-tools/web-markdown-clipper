@@ -15,7 +15,6 @@ export const get_clip_key = (clip: Clip) => {
 
 export const get_selection_as_clip: () => Clip = () => {
     const html = get_html_of_selection();
-    const markdown = turndown_service.turndown(html);
 
     const now = new Date();
     const date = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
@@ -23,14 +22,22 @@ export const get_selection_as_clip: () => Clip = () => {
         created: date,
         source: document.baseURI,
         title: document.title,
-        markdown: `[${document.title}](${document.baseURI})\n\n${markdown}`
+        markdown: turndown_service.turndown(html)
     };
 };
 
 export const download_selection_as_markdown = () => {
     const clip = get_selection_as_clip();
     const filename = get_clip_key(clip);
-    download_content(filename, JSON.stringify(clip));
+    const content = `---
+created: "${clip.created}"
+source: "${clip.source}"
+title: "${clip.title}"
+---
+
+${clip.markdown}
+`;
+    download_content(filename, content);
 };
 
 // reference: https://stackoverflow.com/a/5084044/304786
@@ -64,7 +71,7 @@ export const download_content = (filename: string, content: string): void => {
     const base64Uri = `data:text/markdown;base64,${encoded}`;
     const link = document.createElement('a');
 
-    link.download = "WebMarkdownClips_" + generateValidFileName(filename) + ".json";
+    link.download = "WebMarkdownClips_" + generateValidFileName(filename) + ".md";
     link.href = base64Uri;
     console.log(`download: [${link.download}]`);
     link.click();
